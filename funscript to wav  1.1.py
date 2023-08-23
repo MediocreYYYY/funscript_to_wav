@@ -9,7 +9,6 @@ from scipy.interpolate import Rbf
 from scipy.interpolate import interp1d
 import math
 import threading
-from time import sleep
 class CONVERT:
     offset=30
     
@@ -196,9 +195,9 @@ class CONVERT:
         return wave_data
 
     def write_wavadata(self,wave_data,progressbar, bar):
-        wavename=filename.split("/")
-        wavename=wavename[len(wavename)-1]
-        wavename=wavename.split(".")
+        
+
+        wavename=filename.split(".")
         wavename=wavename[0]
         wavename=wavename+".wav"
         f = wave.open(wavename, "wb")
@@ -211,7 +210,8 @@ class CONVERT:
         f.close()
         progressbar['value']=1000
         bar.update()
-
+        print(wavename)
+        return wavename
 def start(): 
     th1=threading.Thread(target=Pro_Bar)
     th1.start()
@@ -236,10 +236,10 @@ def start_conv(progressbar, bar):
     c=CONVERT(framerate,minfra,maxfra)
     wave_data=c.processing(progressbar, bar)
 
-    c.write_wavadata(wave_data,progressbar, bar)
+    wavename=c.write_wavadata(wave_data,progressbar, bar)
     if d:
-        out=filename.split(".")
-        out="wav file path:"+out[0]+".wav"
+
+        out="wav file path:"+wavename
         out=Label(root, text=out,font=('', 14))
         out.place(x=350,y=350)
 
